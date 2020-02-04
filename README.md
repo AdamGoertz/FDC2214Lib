@@ -4,7 +4,7 @@
 * Wire
 
 ### Example
-FDC2214 objects can be constructed and configured using a sequence of function calls to modify the sensor's configurations registers. The '''begin()''' method transmits the configuration parameters to the FDC. Each object is initialized with a set of reasonable default parameters, but the default configuration may need to be tweaked depending on your application.
+FDC2214 objects can be constructed and configured using a sequence of function calls to modify the sensor's configurations registers. The `begin()` method transmits the configuration parameters to the FDC. Each object is initialized with a set of reasonable default parameters, but the default configuration may need to be tweaked depending on your application.
 
 ```c++
 FDC2214 sensor;
