@@ -18,6 +18,8 @@ void setup() {
           .withDriveCurrent(31)
           .withDeglitchValue(DEGLITCH_10MHZ)
           .begin();
+
+    Serial.begin(9600);
 }
 
 void loop() {
