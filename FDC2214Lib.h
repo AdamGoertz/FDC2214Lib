@@ -54,7 +54,7 @@
 #define FDC2214_DRIVE_CH2               0x20
 #define FDC2214_DRIVE_CH3               0x21
 
-class MyFDC2214
+class FDC2214
 {
   uint8_t channel_count;
   uint8_t i2c_addr;
@@ -69,21 +69,21 @@ public:
   uint16_t _I2Cread16(uint8_t address);
   void _I2Cwrite16(uint8_t address, uint16_t data);
   
-  MyFDC2214();
+  FDC2214();
 
-  MyFDC2214& withI2cAddress(uint8_t addr_pin);
-  MyFDC2214& withContinuousConversion(uint8_t channel);
-  MyFDC2214& withAutoScan(uint8_t channel_count);
+  FDC2214& withI2cAddress(uint8_t addr_pin);
+  FDC2214& withContinuousConversion(uint8_t channel);
+  FDC2214& withAutoScan(uint8_t channel_count);
 
-  MyFDC2214& withSettleCount(uint16_t _settle_count);
-  MyFDC2214& withReferenceCount(uint16_t _reference_count);
-  MyFDC2214& withDriveCurrent(uint8_t drive_current);
+  FDC2214& withSettleCount(uint16_t _settle_count);
+  FDC2214& withReferenceCount(uint16_t _reference_count);
+  FDC2214& withDriveCurrent(uint8_t drive_current);
 
-  MyFDC2214& withInternalOscillator();
-  MyFDC2214& withExternalOscillator();
+  FDC2214& withInternalOscillator();
+  FDC2214& withExternalOscillator();
 
-  MyFDC2214& withOffset(uint16_t _offset);
-  MyFDC2214& withDeglitchValue(uint8_t deglitch);
+  FDC2214& withOffset(uint16_t _offset);
+  FDC2214& withDeglitchValue(uint8_t deglitch);
 
   void begin();
 

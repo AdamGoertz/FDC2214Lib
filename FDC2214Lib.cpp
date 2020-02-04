@@ -1,7 +1,7 @@
-#include "MyFDC2214.h"
+#include "FDC2214Lib.h"
 #include <Wire.h>
 
-MyFDC2214::MyFDC2214() :
+FDC2214::FDC2214() :
   config_reg(INT_OSC_CONFIG),
   mux_config_reg(CONTINUOUS_CONFIG),
   i2c_addr(FDC2214_I2C_ADDR_0),
@@ -13,12 +13,12 @@ MyFDC2214::MyFDC2214() :
 {
 }
 
-MyFDC2214& MyFDC2214::withI2cAddress(uint8_t addr_pin)
+FDC2214& FDC2214::withI2cAddress(uint8_t addr_pin)
 {
    i2c_addr = (addr_pin) ? FDC2214_I2C_ADDR_1 : FDC2214_I2C_ADDR_0; 
 }
 
-MyFDC2214& MyFDC2214::withContinuousConversion(uint8_t channel)
+FDC2214& FDC2214::withContinuousConversion(uint8_t channel)
 {
   config_reg &= 0x3FFF; // Clear channel bits [15:14]
   config_reg |= ((uint16_t)channel) << 14;
@@ -26,7 +26,7 @@ MyFDC2214& MyFDC2214::withContinuousConversion(uint8_t channel)
   return *this;
 }
 
-MyFDC2214& MyFDC2214::withAutoScan(uint8_t channel_count)
+FDC2214& FDC2214::withAutoScan(uint8_t channel_count)
 {
   if (channel_count >= 2 && channel_count <= 4)
   {
@@ -37,14 +37,14 @@ MyFDC2214& MyFDC2214::withAutoScan(uint8_t channel_count)
   return *this;
 }
 
-MyFDC2214& MyFDC2214::withSettleCount(uint16_t _settle_count)
+FDC2214& FDC2214::withSettleCount(uint16_t _settle_count)
 {
     settle_count = _settle_count;
     return *this;
 }
 
 
-MyFDC2214& MyFDC2214::withReferenceCount(uint16_t _reference_count)
+FDC2214& FDC2214::withReferenceCount(uint16_t _reference_count)
 {
   if (_reference_count >  0x0100) 
   {
@@ -54,7 +54,7 @@ MyFDC2214& MyFDC2214::withReferenceCount(uint16_t _reference_count)
   return *this;
 }
 
-MyFDC2214& MyFDC2214::withDriveCurrent(uint8_t drive_current)
+FDC2214& FDC2214::withDriveCurrent(uint8_t drive_current)
 {
   if (drive_current < 32)
   {
@@ -62,34 +62,34 @@ MyFDC2214& MyFDC2214::withDriveCurrent(uint8_t drive_current)
   }
 }
 
-MyFDC2214& MyFDC2214::withDeglitchValue(uint8_t deglitch)
+FDC2214& FDC2214::withDeglitchValue(uint8_t deglitch)
 {
   mux_config_reg &= 0xFFF8; // Clear deglitch bits [2:0]
   mux_config_reg |= (deglitch | 0x7);
   return *this;
 }
 
-MyFDC2214& MyFDC2214::withInternalOscillator()
+FDC2214& FDC2214::withInternalOscillator()
 {
   config_reg &= 0xFDFF;
 
   return *this;
 }
 
-MyFDC2214& MyFDC2214::withExternalOscillator()
+FDC2214& FDC2214::withExternalOscillator()
 {
   config_reg |= 0x0200;
 
   return *this;
 }
 
-MyFDC2214& MyFDC2214::withOffset(uint16_t _offset)
+FDC2214& FDC2214::withOffset(uint16_t _offset)
 {
     offset = _offset;
     return *this;
 }
 
-void MyFDC2214::begin() 
+void FDC2214::begin() 
 {
   Wire.begin();
   
@@ -117,7 +117,7 @@ void MyFDC2214::begin()
   _I2Cwrite16(FDC2214_MUX_CONFIG, mux_config_reg);
 }
 
-uint16_t MyFDC2214::_I2Cread16(uint8_t address)
+uint16_t FDC2214::_I2Cread16(uint8_t address)
 {
   uint16_t retVal = 0;
 
@@ -134,7 +134,7 @@ uint16_t MyFDC2214::_I2Cread16(uint8_t address)
   return retVal;
 }
 
-void MyFDC2214::_I2Cwrite16(uint8_t address, uint16_t data)
+void FDC2214::_I2Cwrite16(uint8_t address, uint16_t data)
 {
   Wire.beginTransmission(i2c_addr);
   Wire.write(address);
@@ -143,7 +143,7 @@ void MyFDC2214::_I2Cwrite16(uint8_t address, uint16_t data)
   Wire.endTransmission();
 }
 
-uint32_t MyFDC2214::getSensorReading(uint8_t channel)
+uint32_t FDC2214::getSensorReading(uint8_t channel)
 {
   uint8_t addressLSB;
   uint8_t addressMSB;
