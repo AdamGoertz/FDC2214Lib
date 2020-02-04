@@ -22,9 +22,8 @@ void setup() {
 
 void loop() {
     Serial.println(sensor.getSensorReading(0));
-}```
-
-
+}
+```
 
 ### Thanks to
 
