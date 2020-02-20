@@ -4,6 +4,8 @@
 FDC2214::FDC2214() :
   config_reg(INT_OSC_CONFIG),
   mux_config_reg(CONTINUOUS_CONFIG),
+  reset_dev_reg(RESET_DEV_DEFAULT),
+  clock_dividers_reg(CLK_DIV_DEFAULT),
   i2c_addr(FDC2214_I2C_ADDR_0),
   channel_count(1),
   reference_count(0xFFFF),// Maximum Reference Count
@@ -89,6 +91,27 @@ FDC2214& FDC2214::withOffset(uint16_t _offset)
     return *this;
 }
 
+FDC2214& FDC2214::withGain(uint8_t gain)
+{
+  reset_dev_reg &= 0x03FF; // Reset
+  reset_dev_reg |= ((uint16_t)gain) << 9;
+  return *this;
+}
+
+FDC2214& FDC2214::withSingleEndedMode()
+{
+  clock_dividers_reg &= 0x03FF;
+  clock_dividers_reg |= ((uint16_t)0x2) << 12;
+  return *this;
+}
+
+FDC2214& FDC2214::withDifferentialMode(uint16_t freq_range)
+{
+  clock_dividers_reg &= CLK_DIV_DEFAULT;
+  clock_dividers_reg |= freq_range << 12;
+  return *this;
+}
+
 void FDC2214::begin() 
 {
   Wire.begin();
@@ -113,6 +136,12 @@ void FDC2214::begin()
   _I2Cwrite16(FDC2214_DRIVE_CH2, i_drive);
   _I2Cwrite16(FDC2214_DRIVE_CH3, i_drive);
 
+  _I2Cwrite16(FDC2214_CLOCK_DIVIDERS_CH0, clock_dividers_reg);
+  _I2Cwrite16(FDC2214_CLOCK_DIVIDERS_CH1, clock_dividers_reg);
+  _I2Cwrite16(FDC2214_CLOCK_DIVIDERS_CH2, clock_dividers_reg);
+  _I2Cwrite16(FDC2214_CLOCK_DIVIDERS_CH3, clock_dividers_reg);
+
+  _I2Cwrite16(FDC2214_RESET_DEV, reset_dev_reg);
   _I2Cwrite16(FDC2214_CONFIG, config_reg);
   _I2Cwrite16(FDC2214_MUX_CONFIG, mux_config_reg);
 }

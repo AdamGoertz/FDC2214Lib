@@ -3,15 +3,26 @@
 #define INT_OSC_CONFIG       0x1C81
 #define EXT_OSC_CONFIG       0x1E81
 #define CONTINUOUS_CONFIG    0x020F
+#define RESET_DEV_DEFAULT    0x0000
+#define CLK_DIV_DEFAULT 0x0000
 
 // Address is 0x2A (default) or 0x2B (if ADDR is high)
 #define FDC2214_I2C_ADDR_0   0x2A
 #define FDC2214_I2C_ADDR_1   0x2B
 
+// Parameter Definitions
 #define DEGLITCH_1MHZ 0x1
 #define DEGLITCH_3MHZ 0x4
 #define DEGLITCH_10MHZ 0x5
 #define DEGLITCH_33MHZ 0x7
+
+#define GAIN_1 0x0
+#define GAIN_4 0x1
+#define GAIN_8 0x2
+#define GAIN_16 0x3
+
+#define DIF_FREQ_LOW 0x0001
+#define DIF_FREQ_HIGH 0x0002
 
 
 //bitmasks
@@ -24,6 +35,7 @@
 #define FDC2214_DEVICE_ID               0x7F
 #define FDC2214_MUX_CONFIG              0x1B
 #define FDC2214_CONFIG                  0x1A
+#define FDC2214_RESET_DEV               0x1C
 #define FDC2214_RCOUNT_CH0              0x08
 #define FDC2214_RCOUNT_CH1              0x09
 #define FDC2214_RCOUNT_CH2              0x0A
@@ -64,6 +76,8 @@ class FDC2214
   uint16_t offset;
   uint16_t config_reg;
   uint16_t mux_config_reg;
+  uint16_t reset_dev_reg;
+  uint16_t clock_dividers_reg;
   
 public:
   uint16_t _I2Cread16(uint8_t address);
@@ -84,6 +98,11 @@ public:
 
   FDC2214& withOffset(uint16_t _offset);
   FDC2214& withDeglitchValue(uint8_t deglitch);
+
+  FDC2214& withGain(uint8_t gain);
+
+  FDC2214& withSingleEndedMode();
+  FDC2214& withDifferentialMode(uint16_t freq_range);
 
   void begin();
 
