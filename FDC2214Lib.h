@@ -73,10 +73,8 @@ class FDC2214
   uint16_t i_drive;
   uint16_t reference_count;
   uint16_t settle_count;
-  uint16_t offset;
   uint16_t config_reg;
   uint16_t mux_config_reg;
-  uint16_t reset_dev_reg;
   uint16_t clock_dividers_reg;
   
 public:
@@ -96,10 +94,7 @@ public:
   FDC2214& withInternalOscillator();
   FDC2214& withExternalOscillator();
 
-  FDC2214& withOffset(uint16_t _offset);
   FDC2214& withDeglitchValue(uint8_t deglitch);
-
-  FDC2214& withGain(uint8_t gain);
 
   FDC2214& withSingleEndedMode();
   FDC2214& withDifferentialMode(uint16_t freq_range);
