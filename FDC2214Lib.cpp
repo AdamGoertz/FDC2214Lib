@@ -181,8 +181,9 @@ uint32_t FDC2214::getSensorReading(uint8_t channel)
 
   // Wait for next available conversion
   uint8_t timeout = 100;
+  uint16_t status = 0x0000;
   do {
-    uint16_t status = _I2Cread16(FDC2214_STATUS);
+    status = _I2Cread16(FDC2214_STATUS);
   } while (timeout-- > 0 && !(status & available_conversion_mask));
 
   result |= (_I2Cread16(addressMSB) & 0x0FFF) << 16; // Mask out status bits, keep only lower 12 bits.
